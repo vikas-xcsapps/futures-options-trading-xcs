@@ -18,5 +18,8 @@
     "node-pandas": "^1.0.5",
     "path": "^0.12.7",
     "socket.io": "^4.3.1"
+  },
+  "engines": {
+    "node": "14.17.3"
   }
 }
