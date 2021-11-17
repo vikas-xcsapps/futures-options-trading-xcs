@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Home</title>
+
+  <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"
+    integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
+    crossorigin="anonymous"></script>
+
+  <!-- Required meta tags for Bootstrap -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+  {{!-- Bootstrap CSS--}}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+  {{!-- Bootstrap JS --}}
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+    integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
+    crossorigin="anonymous"></script>
+
+  {{!-- Inline Radio Buttons --}}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  {{!-- Icons --}}
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+</head>
+
+<body>
+
+
+
+  {{!-- Navigation Bar --}}
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-cloud"></i>
+      XCS ALGO TRADING
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link" href="/updateInstruments">Update Instruments </a>
+        </li>
+      </ul>
+
+      <form class="form-inline my-2 my-lg-0">
+        <input id="search-input" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button id="search-button" class="btn btn-outline-success my-2 my-sm-0" type="button"
+          onclick="searchInstrument()">Search</button>
+      </form>
+    </div>
+  </nav>
+
+  <h6 style="margin-top: 10px; margin-right: 20px; text-align: right;"> {{userName}} </h6>
+
+  <div class=" container">
+    <div class="row">
+      <div class="col-8 m-auto text-center">
+        <h4>Trade in futures and options</h4>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div style="width: 100% !important; overflow-x: scroll;">
+        <div style="height: 200px; overflow-y: auto;">
+          <table id="instrumentsTable" class="table table-hover table-bordered">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col" class="text-center">Id</th>
+                <th scope="col" class="text-center">Trade Name</th>
+                <th scope="col" class="text-center">Instrument Type</th>
+                <th scope="col" class="text-center">Lot Size</th>
+                <th scope="col" class="text-center">Segment</th>
+                <th scope="col" class="text-center">Exchange</th>
+                <th scope="col" class="text-center">Select</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="row">
+
+      <div class="col-4 m-auto text-center">
+      </div>
+      <div class="col-4 m-auto text-center">
+        {{!-- <div class="form-check-inline">
+          <label class="form-check-label" for="long">
+            <input type="radio" class="form-check-input" id="long" name="optradio" value="long" checked>Long
+          </label>
+        </div>
+        <div class="form-check-inline">
+          <label class="form-check-label" for="short">
+            <input type="radio" class="form-check-input" id="short" name="optradio" value="short">Short
+          </label>
+        </div> --}}
+
+      </div>
+
+      <div class="col-4 m-auto text-right">
+        <button type="button" class="btn btn-outline-success" onclick="getBestTrade()">Go</button>
+      </div>
+    </div>
+
+    <br>
+    <div class="row">
+
+      <div class="col-4 m-auto text-center">
+      </div>
+      <div class="col-4 m-auto text-center">
+        <h5 id="h5"></h5>
+      </div>
+
+      <div class="col-4 m-auto text-right">
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col-4 m-auto text-center">
+      </div>
+      <div class="col-4 m-auto text-center">
+        <h6 id="h6"></h6>
+      </div>
+
+      <div class="col-4 m-auto text-right">
+      </div>
+    </div>
+
+    <div class="row">
+      <div style="width: 100% !important; overflow-x: scroll;">
+        <div style="height: 200px; overflow-y: auto;">
+          <table class="table table-hover table-bordered">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col" class="text-center">Id</th>
+                <th scope="col" class="text-center">Trade Name</th>
+                <th scope="col" class="text-center">Instrument Token</th>
+                <th scope="col" class="text-center">Lot Size</th>
+                <th scope="col" class="text-center">Segment</th>
+                <th scope="col" class="text-center">Exchange Token</th>
+                <th scope="col" class="text-center">Select</th>
+              </tr>
+            </thead>
+            <tbody id="reportTable" class="text-center">
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <div class="row">
+      <div class="col-4 m-auto text-center">
+      </div>
+      <div class="col-4 m-auto text-center">
+        <button type="button" class="btn btn-outline-success">TRADE</button>
+      </div>
+
+      <div class="col-4 m-auto text-right">
+      </div>
+    </div>
+
+    <br>
+    <br>
+  </div>
+
+  <script>
+
+    var socket = io.connect();
+    socket.on("connection");
+    var searchResult;
+    var monthArray = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    socket.on('searchData', (data) => {
+      var size = data.size;
+      searchResult = data.search_result;
+
+      var tableBody = document.querySelector("tbody");
+      var tableRowsSize = tableBody.rows;
+      for (var i = tableRowsSize.length - 1; i >= 0; i--) {
+        tableBody.deleteRow(i);
+      }
+
+      var counter = 0;
+      for (var dict of searchResult) {
+
+        var segment = dict.segment;
+        var expiry = dict.expiry;
+        var date = new Date(expiry);
+        var year = date.getUTCFullYear();
+        var month = date.getMonth();
+        var monthName = monthArray[parseInt(month)];
+        var tradeName;
+        if (segment == 'NFO-FUT') {
+          tradeName = dict.name + 'FUT' + monthName + year;
+        } else {
+          tradeName = dict.name + dict.strike + dict.instrument_type;
+        }
+
+        var lotSize = dict.lot_size;
+        var exchange = dict.exchange;
+        var instrumentType = dict.instrument_type;
+
+
+        var id = counter + 1;
+
+        var row = tableBody.insertRow(counter);
+
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
+        var cell6 = row.insertCell(5);
+        var cell7 = row.insertCell(6);
+
+        counter = id;
+        var radioBtn = `<input type="radio" name="inlineRadioOptions" id="${counter}">`;
+        cell1.innerHTML = `${id}`;
+        cell2.innerHTML = `${tradeName}`;
+        cell3.innerHTML = `${instrumentType}`;
+        cell4.innerHTML = `${lotSize}`;
+        cell5.innerHTML = `${segment}`;
+        cell6.innerHTML = `${exchange}`;
+        cell7.innerHTML = radioBtn;
+      }
+
+    });
+
+    const searchInstrument = function () {
+      const searchButton = document.getElementById('search-button');
+      const searchInput = document.getElementById('search-input');
+
+      const inputValue = searchInput.value;
+      var inputString = String(inputValue);
+      inputString = inputString.toUpperCase();
+      console.log(inputString);
+      socket.emit("doSearch", inputString);
+
+      return true;
+    }
+
+    const getBestTrade = function () {
+
+      var tableBody = document.querySelector("tbody");
+      var tableRows = tableBody.rows;
+      var tableRowsSize = tableRows.length;
+
+      if (tableRowsSize == 0) {
+        alert("Please do search and select the trade");
+      } else {
+
+        var radios = document.getElementsByTagName('input');
+        var id;
+        var checkedArray = [];
+        for (var i = 0; i < radios.length; i++) {
+          if (radios[i].type === 'radio' && radios[i].checked) {
+            id = radios[i].id;
+            checkedArray.push(id);
+          }
+        }
+
+        var selectedTrade;
+        var selectedInstrumentType;
+        var selectedFuture;
+        for (var i = 0; i < tableRowsSize; i++) {
+          var tableRowId = tableRows[i].cells[0].innerHTML;
+          if (checkedArray.includes(tableRowId)) {
+            selectedTrade = tableRows[i].cells[1].innerHTML;
+            selectedInstrumentType = tableRows[i].cells[2].innerHTML;
+            selectedFuture = parseInt(parseInt(tableRows[i].cells[0].innerHTML) - 1);
+            break;
+          }
+        }
+
+        var selectedStrikePrice = selectedTrade.match(/\d/g);
+        selectedStrikePrice = selectedStrikePrice.join("");
+
+        if (selectedInstrumentType == 'CE') {
+          //Now calculate 65% of selected strike price ITM (In The Money)
+          //ITM in CE for selected strike price would be higher always
+          const maxStrikePriceITM = parseInt(selectedStrikePrice) + parseInt(percentage(65, parseInt(selectedStrikePrice)));
+
+          //Now fetch the ITM STRIKE PRICE
+          var bestFoundStrikePrice = [];
+          var defaultStrikePrice;
+          for (var dict of searchResult) {
+            const strikePrice = parseInt(dict.strike);
+            const instrumentType = dict.instrument_type;
+
+            if (strikePrice == parseInt(selectedStrikePrice) && instrumentType == selectedInstrumentType) {
+              defaultStrikePrice = dict;
+            }
+
+            if ((strikePrice > parseInt(selectedStrikePrice)) && (strikePrice < maxStrikePriceITM) && instrumentType == selectedInstrumentType) {
+              bestFoundStrikePrice.push(dict);
+            }
+          }
+
+          if (bestFoundStrikePrice.length == 0) {
+            bestFoundStrikePrice.push(defaultStrikePrice);
+          }
+
+          //Now Show the Result
+          var tableBody = document.getElementById('reportTable');
+
+          var tableRowsSize = tableBody.rows;
+          for (var i = tableRowsSize.length - 1; i >= 0; i--) {
+            tableBody.deleteRow(i);
+          }
+
+
+          var bestFoundTradeTitle;
+
+          for (var i = 0; i < bestFoundStrikePrice.length; i++) {
+            bestFoundTradeTitle = bestFoundStrikePrice[i].name;
+            var tradeName = bestFoundStrikePrice[i].name + bestFoundStrikePrice[i].strike + bestFoundStrikePrice[i].instrument_type;
+            var lotSize = bestFoundStrikePrice[i].lot_size;
+            var segment = bestFoundStrikePrice[i].segment;
+            var exchangeToken = bestFoundStrikePrice[i].exchange_token;
+            var instrumentToken = bestFoundStrikePrice[i].instrument_token;
+
+            console.log(bestFoundStrikePrice[i]);
+
+            var id = i + 1;
+
+            var row = tableBody.insertRow(i);
+
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
+            var cell7 = row.insertCell(6);
+
+            var radioBtn = `<input type="radio" name="optradio" id="${id}">`;
+            cell1.innerHTML = `${id}`;
+            cell2.innerHTML = `${tradeName}`;
+            cell3.innerHTML = `${instrumentToken}`;
+            cell4.innerHTML = `${lotSize}`;
+            cell5.innerHTML = `${segment}`;
+            cell6.innerHTML = `${exchangeToken}`;
+            cell7.innerHTML = radioBtn;
+          }
+
+          var h5 = document.getElementById('h5');
+          h5.innerHTML = bestFoundTradeTitle + "  " + "OPT" + "  " + selectedStrikePrice;
+          var h6 = document.getElementById('h6');
+          h6.innerHTML = `BEST FOUND CE : `;
+        } else if (selectedInstrumentType == 'PE') {
+          //Now calculate 65% of selected strike price ITM (In The Money)
+          //ITM in PE for selected strike price would be lower always
+          const maxStrikePriceITM = parseInt(selectedStrikePrice) - parseInt(percentage(65, parseInt(selectedStrikePrice)));
+          console.log(maxStrikePriceITM);
+          //Now fetch the ITM STRIKE PRICE
+          var bestFoundStrikePrice = [];
+          var defaultStrikePrice;
+          for (var dict of searchResult) {
+            const strikePrice = parseInt(dict.strike);
+            const instrumentType = dict.instrument_type;
+
+            if (strikePrice == parseInt(selectedStrikePrice) && instrumentType == selectedInstrumentType) {
+              defaultStrikePrice = dict;
+            }
+
+            if ((strikePrice < parseInt(selectedStrikePrice)) && (strikePrice > maxStrikePriceITM) && instrumentType == selectedInstrumentType) {
+              bestFoundStrikePrice.push(dict);
+            }
+          }
+
+          if (bestFoundStrikePrice.length == 0) {
+            bestFoundStrikePrice.push(defaultStrikePrice);
+          }
+
+          //Now Show the Result
+          var tableBody = document.getElementById('reportTable');
+
+          var tableRowsSize = tableBody.rows;
+          for (var i = tableRowsSize.length - 1; i >= 0; i--) {
+            tableBody.deleteRow(i);
+          }
+
+
+          var bestFoundTradeTitle;
+
+          for (var i = 0; i < bestFoundStrikePrice.length; i++) {
+            bestFoundTradeTitle = bestFoundStrikePrice[i].name;
+            var tradeName = bestFoundStrikePrice[i].name + bestFoundStrikePrice[i].strike + bestFoundStrikePrice[i].instrument_type;
+            var lotSize = bestFoundStrikePrice[i].lot_size;
+            var segment = bestFoundStrikePrice[i].segment;
+            var exchangeToken = bestFoundStrikePrice[i].exchange_token;
+            var instrumentToken = bestFoundStrikePrice[i].instrument_token;
+
+            console.log(bestFoundStrikePrice[i]);
+
+            var id = i + 1;
+
+            var row = tableBody.insertRow(i);
+
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
+            var cell7 = row.insertCell(6);
+
+            var radioBtn = `<input type="radio" name="optradio" id="${id}">`;
+            cell1.innerHTML = `${id}`;
+            cell2.innerHTML = `${tradeName}`;
+            cell3.innerHTML = `${instrumentToken}`;
+            cell4.innerHTML = `${lotSize}`;
+            cell5.innerHTML = `${segment}`;
+            cell6.innerHTML = `${exchangeToken}`;
+            cell7.innerHTML = radioBtn;
+          }
+
+          var h5 = document.getElementById('h5');
+          h5.innerHTML = bestFoundTradeTitle + "  " + "OPTION" + "  " + selectedStrikePrice;
+          var h6 = document.getElementById('h6');
+          h6.innerHTML = `BEST FOUND PE : `;
+        } else if (selectedInstrumentType == 'FUT') {
+          //FUTURE TRADE SELECTED
+          //Now Show the Result
+          var tableBody = document.getElementById('reportTable');
+
+          var tableRowsSize = tableBody.rows;
+          for (var i = tableRowsSize.length - 1; i >= 0; i--) {
+            tableBody.deleteRow(i);
+          }
+
+          var index = 0;
+          var bestFoundStrikePrice = [];
+          for (var dict of searchResult) {
+            if (parseInt(index) == selectedFuture) {
+              bestFoundStrikePrice.push(dict);
+              break;
+            }
+
+            index += 1;
+          }
+
+          var bestFoundTradeTitle;
+          for (var i = 0; i < bestFoundStrikePrice.length; i++) {
+            bestFoundTradeTitle = bestFoundStrikePrice[i].name;
+            var expiry = bestFoundStrikePrice[i].expiry;
+            var date = new Date(expiry);
+            var year = date.getUTCFullYear();
+            var month = date.getMonth();
+            var monthName = monthArray[parseInt(month)];
+            var tradeName = bestFoundTradeTitle + 'FUT' + monthName + year;
+            var lotSize = bestFoundStrikePrice[i].lot_size;
+            var segment = bestFoundStrikePrice[i].segment;
+            var exchangeToken = bestFoundStrikePrice[i].exchange_token;
+            var instrumentToken = bestFoundStrikePrice[i].instrument_token;
+
+            console.log(bestFoundStrikePrice[i]);
+
+            var id = i + 1;
+
+            var row = tableBody.insertRow(i);
+
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
+            var cell7 = row.insertCell(6);
+
+            var radioBtn = `<input type="radio" name="optradio" id="${id}">`;
+            cell1.innerHTML = `${id}`;
+            cell2.innerHTML = `${tradeName}`;
+            cell3.innerHTML = `${instrumentToken}`;
+            cell4.innerHTML = `${lotSize}`;
+            cell5.innerHTML = `${segment}`;
+            cell6.innerHTML = `${exchangeToken}`;
+            cell7.innerHTML = radioBtn;
+          }
+
+          var h5 = document.getElementById('h5');
+          h5.innerHTML = bestFoundTradeTitle + "  " + "FUTURE" + "  " + selectedStrikePrice;
+          var h6 = document.getElementById('h6');
+          h6.innerHTML = `BEST FOUND FUTURE : `;
+
+        }
+
+      }
+    }
+
+    function percentage(percent, total) {
+      return ((percent / 100) * total).toFixed(2)
+    }
+
+  </script>
+
+</body>
+
+</html>
